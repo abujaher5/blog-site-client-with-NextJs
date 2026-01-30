@@ -9,14 +9,18 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { VersionSwitcher } from "./version-switcher";
-import { SearchForm } from "./search-form";
+import Link from "next/link";
+import { adminRoutes } from "@/routes/adminRoutes";
+import { userRoutes } from "@/routes/userRoutes";
+import { Route } from "@/types";
+
+// import { VersionSwitcher } from "./version-switcher";
+// import { SearchForm } from "./search-form";
 
 // This is sample data.
 const data = {
@@ -24,153 +28,55 @@ const data = {
   navMain: [
     {
       title: "Getting Started",
-      url: "#",
+
       items: [
         {
-          title: "Installation",
-          url: "#",
+          title: "Admin Dashboard",
+          url: "/admin-dashboard",
         },
         {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
+          title: "User Dashboard",
+          url: "/user-dashboard",
         },
       ],
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: {
+  user: { role: string } & React.ComponentProps<typeof Sidebar>;
+}) {
+  let routes: Route[] = [];
+  switch (user.role) {
+    case "admin":
+      routes = adminRoutes;
+      break;
+
+    case "user":
+      routes = userRoutes;
+      break;
+
+    default:
+      routes = [];
+      break;
+  }
+
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-        <SearchForm />
-      </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
+        {routes.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
+                    <SidebarMenuButton asChild>
+                      <Link href={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
