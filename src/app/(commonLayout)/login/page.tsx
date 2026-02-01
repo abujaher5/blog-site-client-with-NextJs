@@ -1,11 +1,11 @@
-import React from "react";
+import { LoginForm } from "@/components/modules/authentication/login-form";
 
-const LoginPage = () => {
+export default function Page() {
   return (
-    <div className="text-3xl text-center">
-      <h2>This is login page..</h2>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <LoginForm />
+      </div>
     </div>
   );
-};
-
-export default LoginPage;
+}
