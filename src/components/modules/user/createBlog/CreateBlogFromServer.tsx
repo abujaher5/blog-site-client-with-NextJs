@@ -18,7 +18,7 @@ import { redirect } from "next/navigation";
 
 const API_URL = env.API_URL;
 
-const CreateBlogFrom = () => {
+const CreateBlogFromServer = () => {
   const createBlog = async (formData: FormData) => {
     "use server";
     const title = formData.get("title") as string;
@@ -103,4 +103,4 @@ const CreateBlogFrom = () => {
   );
 };
 
-export default CreateBlogFrom;
+export default CreateBlogFromServer;
